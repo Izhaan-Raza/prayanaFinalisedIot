@@ -19,9 +19,9 @@ This repository contains the test bench code for the Prayana Electric Registrati
 
 1. **Enter the MongoDB Container**
    ```sh
-   docker exec -it <mongodb_container_name> mongosh
+   docker exec -it prayana_mongo mongosh
    ```
-   Replace `<mongodb_container_name>` with the actual name of your MongoDB container. You can get the name by running:
+   You can verify the container name by running:
    ```sh
    docker ps
    ```
@@ -40,13 +40,12 @@ This repository contains the test bench code for the Prayana Electric Registrati
 
 1. **Check Logs of the Flask Server**
    ```sh
-   docker logs -f <flask_container_name>
+   docker logs -f prayana_flask
    ```
-   Replace `<flask_container_name>` with the actual name of your Flask container.
 
 2. **If the Flask App is Not Running, Restart It**
    ```sh
-   docker restart <flask_container_name>
+   docker restart prayana_flask
    ```
 
 ---
