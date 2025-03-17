@@ -1,0 +1,22 @@
+# Ignore Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore Virtual Environment
+venv/
+env/
+
+# Ignore MongoDB Data (If Using Local MongoDB)
+data/
+dump/
+
+# Ignore Docker Containers, Volumes & Logs
+*.log
+docker-compose.override.yml
+.env
+.envrc
+.vscode/
+node_modules/
+
