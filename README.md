@@ -48,6 +48,67 @@ This repository contains the test bench code for the Prayana Electric Registrati
    docker restart prayana_flask
    ```
 
+## 📡 API Endpoints
+
+### 1. Check or Add Token
+- **Endpoint:** `POST /check_token`
+- **Request Body:**
+  ```json
+  {
+    "token": "test123"
+  }
+  ```
+- **Response:**
+  - If the token exists: `{ "message": "Token already exists" }`
+  - If the token does not exist: `{ "message": "Token added successfully" }`
+
+### 2. Register User
+- **Endpoint:** `POST /register`
+- **Request Body:**
+  ```json
+  {
+    "username": "izzu",
+    "regno": "12345",
+    "token": "test123"
+  }
+  ```
+- **Response:**
+  - If token does not exist: `{ "error": "Invalid token" }`
+  - If token exists: `{ "message": "User registered successfully" }`
+
+### 3. User Login
+- **Endpoint:** `POST /login`
+- **Request Body:**
+  ```json
+  {
+    "username": "izzu",
+    "password": "password123"
+  }
+  ```
+- **Response:**
+  - If login is successful: `{ "message": "Welcome to Prayana, izzu" }`
+  - If login fails: `{ "error": "Invalid credentials" }`
+
+## 📝 Postman Test Cases
+
+1. **Check Token**
+   - Method: `POST`
+   - URL: `http://localhost:5000/check_token`
+   - Body (JSON): `{ "token": "test123" }`
+   - Expected Response: `{ "message": "Token already exists" }`
+
+2. **Register User**
+   - Method: `POST`
+   - URL: `http://localhost:5000/register`
+   - Body (JSON): `{ "username": "izzu", "regno": "12345", "token": "test123" }`
+   - Expected Response: `{ "message": "User registered successfully" }`
+
+3. **Login User**
+   - Method: `POST`
+   - URL: `http://localhost:5000/login`
+   - Body (JSON): `{ "username": "izzu", "password": "password123" }`
+   - Expected Response: `{ "message": "Welcome to Prayana, izzu" }`
+
 ---
 
 Now you can easily run, debug, and manage the project using Docker! 🚀
