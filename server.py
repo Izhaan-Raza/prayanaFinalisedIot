@@ -7,7 +7,7 @@ app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
 # Connect to MongoDB
-client = MongoClient("mongodb://localhost:27017/")
+client = MongoClient("mongodb://mongo_container:27017/")
 db = client["prayana"]
 
 # Collections
@@ -62,6 +62,22 @@ def login():
         return jsonify({"error": "Invalid credentials"}), 401
 
     return jsonify({"message": f"Welcome to Prayana, {username}!"}), 200
+
+
+
+
+@app.route('/token', methods =['POST'])
+def token():
+    data = request.json
+    token = data.get("token")
+
+    if not token:
+        return jsonify({"error": "Token value required"}), 400
+    if tokens_collection.find_one({"token": token}):
+        return jsonify({"error": "Token already exists"}), 409
+
+    tokens_collection.insert_one({"token": token})
+    return jsonify({"message": "Token registerd Succesully"}), 201
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
