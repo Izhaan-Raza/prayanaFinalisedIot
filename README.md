@@ -19,7 +19,7 @@ This repository contains the test bench code for the Prayana Electric Registrati
 
 1. **Enter the MongoDB Container**
    ```sh
-   docker exec -it prayana_mongo mongosh
+   docker exec -it <use correct container name> mongosh
    ```
    You can verify the container name by running:
    ```sh
