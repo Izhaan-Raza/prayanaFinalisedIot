@@ -1,3 +1,14 @@
+```
+░▒▓███████▓▒░░░▒▓████████▓▒░      ░▒▓███████▓▒░        ░▒▓██████▓▒░        ░▒▓███████▓▒░ 
+░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░             ░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░        
+░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░             ░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░        
+░▒▓███████▓▒░░▒▓██████▓▒░        ░▒▓███████▓▒░       ░▒▓████████▓▒░       ░▒▓██████▓▒░  
+░▒▓█▓▒░      ░▒▓█▓▒░             ░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░             ░▒▓█▓▒░ 
+░▒▓█▓▒░▒▓██▓▒░▒▓█▓▒░      ░▒▓██▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓██▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓██▓▒░      ░▒▓█▓▒░ 
+░▒▓█▓▒░▒▓██▓▒░▒▓████████▓▒░▒▓██▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓██▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓██▓▒░▒▓███████▓▒░  
+                                                                                         
+```
+
 # Prayana Electric Slot Registration System (P.E.S.R.S.)
 
 ## Overview
@@ -12,19 +23,7 @@ Welcome to the **Prayana Electric Slot Registration System** (P.E.S.R.S.), a sea
   - When a user tries to create a dashboard account from their ID card and the token, the server checks if the token exists in the tokens collection. Only then will it allow the user to create a dashboard account.
   - When a user attempts to use their ID card on the e-bike, the server checks if their token is present in the registered users collection.
 
-## ASCII Art
-Here’s the cool ASCII art displayed during the server startup:
 
-```
-░▒▓███████▓▒░░░▒▓████████▓▒░      ░▒▓███████▓▒░        ░▒▓██████▓▒░        ░▒▓███████▓▒░ 
-░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░             ░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░        
-░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░             ░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░        
-░▒▓███████▓▒░░▒▓██████▓▒░        ░▒▓███████▓▒░       ░▒▓████████▓▒░       ░▒▓██████▓▒░  
-░▒▓█▓▒░      ░▒▓█▓▒░             ░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░             ░▒▓█▓▒░ 
-░▒▓█▓▒░▒▓██▓▒░▒▓█▓▒░      ░▒▓██▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓██▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓██▓▒░      ░▒▓█▓▒░ 
-░▒▓█▓▒░▒▓██▓▒░▒▓████████▓▒░▒▓██▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓██▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓██▓▒░▒▓███████▓▒░  
-                                                                                         
-```
 
 ## API Endpoints
 
