@@ -1,5 +1,5 @@
 
-# Prayana Electric Registration Slot System - Test Bench
+# P.E.R.A.S- Prayana Electric Registration & Authentication System
 
 ## 🚗 Allocation System Workflow
 
