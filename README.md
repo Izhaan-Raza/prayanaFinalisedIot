@@ -1,6 +1,35 @@
+---
+
 # Prayana Electric Registration Slot System - Test Bench
 
-This repository contains the test bench code for the Prayana Electric Registration Slot System.
+## 🚗 Allocation System Workflow
+
+The allocation system is designed to handle tokens for users at charging stations and ensure they can create an account for the dashboard and use the electric bike. Here's how it works:
+
+### 1. Charging Station Token Registration
+
+- **When a person inserts their ID card at the charging station:**
+  - The server checks if the token (associated with the person's ID card) already exists in the `tokens` collection in MongoDB.
+  - If the token doesn't exist, it is added to the `tokens` collection in the database.
+  - This ensures that only registered tokens are used to create an account or access services.
+
+### 2. Creating a Dashboard Account
+
+- **When a person tries to create a dashboard account using their ID card and the token given to them at the charging station:**
+  - The server checks if the token exists in the `tokens` collection.
+  - If the token is valid and exists in the collection, the server allows the user to proceed with account creation for the dashboard.
+  - If the token is not present, the server responds with an error, preventing account creation.
+
+### 3. Using the E-Bike
+
+- **When a person tries to use their ID card on the electric bike:**
+  - The server checks if the token is present in the `registered_users` collection.
+  - If the token is found in the `registered_users` collection (indicating the user has created an account), the user is allowed to use the bike.
+  - If the token is not found, the server responds with an error, denying access to the bike.
+
+This workflow ensures that only valid tokens allow users to register and use the system, providing a secure and streamlined process for managing electric bike rentals and user accounts.
+
+---
 
 ## 🚀 How to Run the Docker Container
 
@@ -141,36 +170,27 @@ This repository contains the test bench code for the Prayana Electric Registrati
        }'
    ```
 
-## 📝 Postman Test Cases
+### 4. Token Registration
+- **Endpoint:** `POST /token`
+- **Request Body:**
+  ```json
+  {
+    "token": "test123"
+  }
+  ```
+- **Response:**
+  - If token is missing: `{ "error": "Token value required" }`
+  - If token already exists: `{ "error": "Token already exists" }`
+  - If successful: `{ "message": "Token registered successfully" }`
 
-1. **User Signup**
-   - Method: `POST`
-   - URL: `http://localhost:5000/signup`
-   - Body (JSON): 
-     ```json
-     {
-       "username": "izzu",
-       "password": "password123",
-       "re_password": "password123",
-       "token": "test123"
-     }
-     ```
-   - Expected Response: `{ "message": "Welcome to Prayana, izzu!" }` or appropriate error messages (e.g., "Invalid token", "Username already exists", etc.)
-
-2. **User Login**
-   - Method: `POST`
-   - URL: `http://localhost:5000/login`
-   - Body (JSON): `{ "username": "izzu", "password": "password123" }`
-   - Expected Response: `{ "message": "Welcome to Prayana, izzu" }` or `{ "error": "Invalid credentials" }`
-
-3. **Token Authentication**
-   - Method: `POST`
-   - URL: `http://localhost:5000/auth`
-   - Body (JSON): `{ "token": "test123" }`
-   - Expected Response: `{ "message": "access granted" }` or `{ "error": "Access denied" }`
+- **Test with `curl`**:
+   ```sh
+   curl -X POST http://localhost:5000/token \
+   -H "Content-Type: application/json" \
+   -d '{
+         "token": "test123"
+       }'
+   ```
 
 ---
 
-Now you can easily run, debug, and manage the project using Docker! 🚀
-
----
