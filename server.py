@@ -25,7 +25,7 @@ def signup():
     # Check if token exists in 'tokens' collection
     if not tokens_collection.find_one({"token": token}):
         return jsonify({"error": "Please go to the nearest charging station."}), 400
-
+    
     # Check if username already exists
     if registered_users_collection.find_one({"username": username}):
         return jsonify({"error": "Username already exists"}), 409
@@ -64,7 +64,17 @@ def login():
     return jsonify({"message": f"Welcome to Prayana, {username}!"}), 200
 
 
+@app.route('/auth', methods =['POST'])
+def auth():
+    data = request.json
+    token = data.get("token")
 
+    if not token:
+        return jsonify({"error":"please send a token"}), 400
+    if tokens_collection.find_one({"token": token }):
+        return jsonify({"message":"access granted"}) , 201
+    else:
+        return jsonify({"error": "Access denaid"}), 401
 
 @app.route('/token', methods =['POST'])
 def token():
