@@ -1,195 +1,194 @@
+# Prayana Electric Slot Registration System (P.E.S.R.S.)
 
-# P.E.R.A.S- Prayana Electric Registration & Authentication System
+## Overview
+Welcome to the **Prayana Electric Slot Registration System** (P.E.S.R.S.), a seamless and secure system designed for electric vehicle (EV) charging stations. The system manages user registration, authentication, and token validation through a simple and effective API, ensuring smooth access to charging stations and services.
 
-## 🚗 Allocation System Workflow
+### **P.E.S.R.S. stands for:**
+- **P**rayana **E**lectric **S**lot **R**egistration **S**ystem
 
-The allocation system is designed to handle tokens for users at charging stations and ensure they can create an account for the dashboard and use the electric bike. Here's how it works:
+## System Workflow
+- **Allocation System**: 
+  - When a person inserts their ID card at a charging station and their ID card token is not in the tokens collection, the server automatically adds the token.
+  - When a user tries to create a dashboard account from their ID card and the token, the server checks if the token exists in the tokens collection. Only then will it allow the user to create a dashboard account.
+  - When a user attempts to use their ID card on the e-bike, the server checks if their token is present in the registered users collection.
 
-### 1. Charging Station Token Registration
+## ASCII Art
+Here’s the cool ASCII art displayed during the server startup:
 
-- **When a person inserts their ID card at the charging station:**
-  - The server checks if the token (associated with the person's ID card) already exists in the `tokens` collection in MongoDB.
-  - If the token doesn't exist, it is added to the `tokens` collection in the database.
-  - This ensures that only registered tokens are used to create an account or access services.
+```
+░▒▓███████▓▒░░░▒▓████████▓▒░      ░▒▓███████▓▒░        ░▒▓██████▓▒░        ░▒▓███████▓▒░ 
+░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░             ░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░        
+░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░             ░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░        
+░▒▓███████▓▒░░▒▓██████▓▒░        ░▒▓███████▓▒░       ░▒▓████████▓▒░       ░▒▓██████▓▒░  
+░▒▓█▓▒░      ░▒▓█▓▒░             ░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░             ░▒▓█▓▒░ 
+░▒▓█▓▒░▒▓██▓▒░▒▓█▓▒░      ░▒▓██▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓██▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓██▓▒░      ░▒▓█▓▒░ 
+░▒▓█▓▒░▒▓██▓▒░▒▓████████▓▒░▒▓██▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓██▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓██▓▒░▒▓███████▓▒░  
+                                                                                         
+```
 
-### 2. Creating a Dashboard Account
+## API Endpoints
 
-- **When a person tries to create a dashboard account using their ID card and the token given to them at the charging station:**
-  - The server checks if the token exists in the `tokens` collection.
-  - If the token is valid and exists in the collection, the server allows the user to proceed with account creation for the dashboard.
-  - If the token is not present, the server responds with an error, preventing account creation.
+### 1. `/signup` [POST]
+This endpoint allows users to sign up and create an account for the dashboard.
 
-### 3. Using the E-Bike
+**Request Body:**
+```json
+{
+  "username": "john_doe",
+  "password": "password123",
+  "re_password": "password123",
+  "token": "user_token_from_charging_station"
+}
+```
 
-- **When a person tries to use their ID card on the electric bike:**
-  - The server checks if the token is present in the `registered_users` collection.
-  - If the token is found in the `registered_users` collection (indicating the user has created an account), the user is allowed to use the bike.
-  - If the token is not found, the server responds with an error, denying access to the bike.
+**Response:**
+- Success:
+  ```json
+  {
+    "message": "Welcome to Prayana, john_doe!"
+  }
+  ```
+- Error (Token not found):
+  ```json
+  {
+    "error": "Please go to the nearest charging station."
+  }
+  ```
+- Error (Username exists):
+  ```json
+  {
+    "error": "Username already exists"
+  }
+  ```
 
-This workflow ensures that only valid tokens allow users to register and use the system, providing a secure and streamlined process for managing electric bike rentals and user accounts.
+### 2. `/login` [POST]
+This endpoint allows users to log in with their credentials.
+
+**Request Body:**
+```json
+{
+  "username": "john_doe",
+  "password": "password123"
+}
+```
+
+**Response:**
+- Success:
+  ```json
+  {
+    "message": "Welcome to Prayana, john_doe!"
+  }
+  ```
+- Error:
+  ```json
+  {
+    "error": "Invalid credentials"
+  }
+  ```
+
+### 3. `/auth` [POST]
+This endpoint checks if a valid token is provided.
+
+**Request Body:**
+```json
+{
+  "token": "user_token"
+}
+```
+
+**Response:**
+- Success:
+  ```json
+  {
+    "message": "Access granted"
+  }
+  ```
+- Error:
+  ```json
+  {
+    "error": "Access denied"
+  }
+  ```
+
+### 4. `/token` [POST]
+This endpoint registers a new token for use.
+
+**Request Body:**
+```json
+{
+  "token": "new_token_from_charging_station"
+}
+```
+
+**Response:**
+- Success:
+  ```json
+  {
+    "message": "Token registered successfully"
+  }
+  ```
+- Error (Token exists):
+  ```json
+  {
+    "error": "Token already exists"
+  }
+  ```
+
+## How to Test the API Using `curl`
+
+Here are some `curl` commands to test the API endpoints.
+
+1. **Test Signup:**
+```bash
+curl -X POST http://localhost:5000/signup -H "Content-Type: application/json" -d '{
+  "username": "john_doe",
+  "password": "password123",
+  "re_password": "password123",
+  "token": "user_token_from_charging_station"
+}'
+```
+
+2. **Test Login:**
+```bash
+curl -X POST http://localhost:5000/login -H "Content-Type: application/json" -d '{
+  "username": "john_doe",
+  "password": "password123"
+}'
+```
+
+3. **Test Auth:**
+```bash
+curl -X POST http://localhost:5000/auth -H "Content-Type: application/json" -d '{
+  "token": "user_token"
+}'
+```
+
+4. **Test Token Registration:**
+```bash
+curl -X POST http://localhost:5000/token -H "Content-Type: application/json" -d '{
+  "token": "new_token_from_charging_station"
+}'
+```
+
+## Running the Application
+### 1. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Run the Flask Application:
+```bash
+python server.py
+```
+
+This will start the Flask application, and the ASCII art will appear in the terminal, indicating that the system is up and running.
+
+## Error Handling and Gunicorn Configuration
+Ensure that Gunicorn is set up properly for production deployment. Example Gunicorn command:
+```bash
+gunicorn -w 4 -b 0.0.0.0:5000 server:app
+```
+
+To view logs, check the standard output or configure a log file for more detailed logging.
 
 ---
-
-## 🚀 How to Run the Docker Container
-
-1. **Build and Start the Docker Containers**
-   ```sh
-   docker-compose up --build -d
-   ```
-   The `-d` flag runs the containers in detached mode.
-
-2. **Check Running Containers**
-   ```sh
-   docker ps
-   ```
-
-## 🗄️ Accessing MongoDB (`mongosh`)
-
-1. **Enter the MongoDB Container**
-   ```sh
-   docker exec -it <use correct container name> mongosh
-   ```
-   You can verify the container name by running:
-   ```sh
-   docker ps
-   ```
-
-2. **Switch to the Database**
-   ```sh
-   use prayana
-   ```
-
-3. **Check Collections**
-   ```sh
-   show collections
-   ```
-
-## 📜 Viewing Flask Server Logs
-
-1. **Check Logs of the Flask Server**
-   ```sh
-   docker logs -f prayana_flask
-   ```
-
-2. **If the Flask App is Not Running, Restart It**
-   ```sh
-   docker restart prayana_flask
-   ```
-
-3. **Gunicorn Error Handling**
-
-   If you're running the Flask app in production with Gunicorn, error handling is crucial. In case of issues with Gunicorn or server startup, you can view the logs for errors and troubleshooting:
-
-   - **To view Gunicorn logs:**
-     ```sh
-     docker logs -f <your_gunicorn_container_name>
-     ```
-
-   - **Common issues:**
-     - If Gunicorn fails to start, check for missing dependencies or application errors.
-     - Ensure that the `requirements.txt` file is up to date, and all dependencies are installed.
-
-   - **Error Handling in Gunicorn:**
-     If an error occurs within the Flask app, Gunicorn will log the error and terminate the request. For detailed logs, make sure Gunicorn is set to log to stdout and stderr, as defined in the `CMD` directive in the `Dockerfile`.
-
----
-
-## 📡 API Endpoints
-
-### 1. User Signup
-- **Endpoint:** `POST /signup`
-- **Request Body:**
-  ```json
-  {
-    "username": "izzu",
-    "password": "password123",
-    "re_password": "password123",
-    "token": "test123"
-  }
-  ```
-- **Response:**
-  - If token is invalid: `{ "error": "Please go to the nearest charging station." }`
-  - If username already exists: `{ "error": "Username already exists" }`
-  - If passwords do not match: `{ "error": "Passwords do not match" }`
-  - If successful: `{ "message": "Welcome to Prayana, izzu!" }`
-
-- **Test with `curl`**:
-   ```sh
-   curl -X POST http://localhost:5000/signup \
-   -H "Content-Type: application/json" \
-   -d '{
-         "username": "izzu",
-         "password": "password123",
-         "re_password": "password123",
-         "token": "test123"
-       }'
-   ```
-
-### 2. User Login
-- **Endpoint:** `POST /login`
-- **Request Body:**
-  ```json
-  {
-    "username": "izzu",
-    "password": "password123"
-  }
-  ```
-- **Response:**
-  - If login is successful: `{ "message": "Welcome to Prayana, izzu" }`
-  - If login fails (invalid credentials): `{ "error": "Invalid credentials" }`
-
-- **Test with `curl`**:
-   ```sh
-   curl -X POST http://localhost:5000/login \
-   -H "Content-Type: application/json" \
-   -d '{
-         "username": "izzu",
-         "password": "password123"
-       }'
-   ```
-
-### 3. Token Authentication
-- **Endpoint:** `POST /auth`
-- **Request Body:**
-  ```json
-  {
-    "token": "test123"
-  }
-  ```
-- **Response:**
-  - If token is valid: `{ "message": "access granted" }`
-  - If token is invalid: `{ "error": "Access denied" }`
-
-- **Test with `curl`**:
-   ```sh
-   curl -X POST http://localhost:5000/auth \
-   -H "Content-Type: application/json" \
-   -d '{
-         "token": "test123"
-       }'
-   ```
-
-### 4. Token Registration
-- **Endpoint:** `POST /token`
-- **Request Body:**
-  ```json
-  {
-    "token": "test123"
-  }
-  ```
-- **Response:**
-  - If token is missing: `{ "error": "Token value required" }`
-  - If token already exists: `{ "error": "Token already exists" }`
-  - If successful: `{ "message": "Token registered successfully" }`
-
-- **Test with `curl`**:
-   ```sh
-   curl -X POST http://localhost:5000/token \
-   -H "Content-Type: application/json" \
-   -d '{
-         "token": "test123"
-       }'
-   ```
-
----
-
