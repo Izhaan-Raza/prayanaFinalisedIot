@@ -21,6 +21,9 @@ services:
       - mongodb
     environment:
       - MONGO_URI=mongodb://mongo_container:27017/
+    volumes:
+      - .:/app
+      - /etc/localtime:/etc/localtime:ro 
 
   nginx:
     image: nginx
