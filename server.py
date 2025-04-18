@@ -73,7 +73,7 @@ def auth():
         return jsonify({"error":"please send a token"}), 400
     if tokens_collection.find_one({"token": token }):
         return jsonify({"message":"access granted"}) , 201
-    else:
+    if not tokens_collection.find_one({"token": token}):
         return jsonify({"error": "Access denaid"}), 401
 
 @app.route('/token', methods =['POST'])
