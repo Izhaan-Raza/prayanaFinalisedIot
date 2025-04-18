@@ -13,15 +13,15 @@ const char* password = "12345678";
 const char* serverUrl = "http://192.168.137.195:5000/auth";
 
 // RFID Pins (for ESP32)
-#define SS_PIN 21      // RFID SDA
-#define RST_PIN 22     // RFID RST
+#define SS_PIN 5      // RFID SDA
+#define RST_PIN 4     // RFID RST
 
 // OLED Display (I2C)
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
 #define OLED_ADDR 0x3C
-#define SDA_PIN 25    // Changed from 18
-#define SCL_PIN 26    // Changed from 19
+#define SDA_PIN 26   // Changed from 18
+#define SCL_PIN 27    // Changed from 19
 
 // Relay Pin
 #define RELAY_PIN 5
