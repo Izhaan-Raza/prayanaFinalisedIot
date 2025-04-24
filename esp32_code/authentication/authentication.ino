@@ -24,7 +24,7 @@ const char* serverUrl = "http://192.168.137.195:5000/auth";
 #define SCL_PIN 27
 
 // Relay Pin
-#define RELAY_PIN 5
+#define RELAY_PIN 32
 
 MFRC522 mfrc522(SS_PIN, RST_PIN);
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
