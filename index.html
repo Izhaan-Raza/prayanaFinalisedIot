@@ -1,52 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login & Signup - Prayana</title>
-    <script>
-        async function signup() {
-            const token = document.getElementById("signup-token").value;
-            const username = document.getElementById("signup-username").value;
-            const password = document.getElementById("signup-password").value;
-            const re_password = document.getElementById("signup-repassword").value;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Prayana - Login/Signup</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 50px;
+      background-color: #f4f4f4;
+    }
 
-            const response = await fetch('http://127.0.0.1:5000/signup', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ token, username, password, re_password })
-            });
+    .form-container {
+      display: none;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin: auto;
+      width: 300px;
+    }
 
-            const result = await response.json();
-            alert(result.message || result.error);
-        }
+    input, button {
+      display: block;
+      width: 90%;
+      padding: 10px;
+      margin: 10px auto;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
 
-        async function login() {
-            const username = document.getElementById("login-username").value;
-            const password = document.getElementById("login-password").value;
+    button {
+      background-color: #1e90ff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
 
-            const response = await fetch('http://127.0.0.1:5000/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
-            });
+    .toggle-link {
+      cursor: pointer;
+      color: #1e90ff;
+      text-decoration: underline;
+      margin-top: 15px;
+    }
 
-            const result = await response.json();
-            alert(result.message || result.error);
-        }
-    </script>
+    /* Toast styles */
+    #toast {
+      visibility: hidden;
+      min-width: 250px;
+      margin-left: -125px;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      border-radius: 8px;
+      padding: 16px;
+      position: fixed;
+      z-index: 1000;
+      left: 50%;
+      bottom: 30px;
+      font-size: 16px;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    #toast.show {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    #toast.success {
+      background-color: #28a745;
+    }
+
+    #toast.error {
+      background-color: #dc3545;
+    }
+  </style>
 </head>
 <body>
-    <h2>Signup</h2>
-    <input type="text" id="signup-token" placeholder="Token" required><br>
-    <input type="text" id="signup-username" placeholder="Username" required><br>
-    <input type="password" id="signup-password" placeholder="Password" required><br>
-    <input type="password" id="signup-repassword" placeholder="Re-enter Password" required><br>
-    <button onclick="signup()">Signup</button>
 
+  <h1>Welcome to Prayana</h1>
+
+  <!-- Login Form -->
+  <div id="loginForm" class="form-container">
     <h2>Login</h2>
-    <input type="text" id="login-username" placeholder="Username" required><br>
-    <input type="password" id="login-password" placeholder="Password" required><br>
-    <button onclick="login()">Login</button>
+    <input type="text" id="loginUsername" placeholder="Username" required>
+    <input type="password" id="loginPassword" placeholder="Password" required>
+    <button onclick="handleLogin()">Login</button>
+    <div class="toggle-link" onclick="showForm('signupForm')">Don't have an account? Sign up</div>
+  </div>
+
+  <!-- Signup Form -->
+  <div id="signupForm" class="form-container">
+    <h2>Signup</h2>
+    <input type="text" id="signupUsername" placeholder="Username" required>
+    <input type="password" id="signupPassword" placeholder="Password" required>
+    <input type="password" id="signupRePassword" placeholder="Re-enter Password" required>
+    <input type="text" id="signupToken" placeholder="Token from station" required>
+    <button onclick="handleSignup()">Sign Up</button>
+    <div class="toggle-link" onclick="showForm('loginForm')">Already have an account? Login</div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast"></div>
+
+  <script>
+    // Show default form
+    window.onload = () => showForm('loginForm');
+
+    function showForm(formId) {
+      document.getElementById('loginForm').style.display = 'none';
+      document.getElementById('signupForm').style.display = 'none';
+      document.getElementById(formId).style.display = 'block';
+    }
+
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      toast.className = `show ${type}`;
+      toast.textContent = message;
+      setTimeout(() => toast.className = toast.className.replace("show", ""), 3000);
+    }
+
+    async function handleLogin() {
+      const username = document.getElementById('loginUsername').value;
+      const password = document.getElementById('loginPassword').value;
+
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        showToast(data.message, 'success');
+        setTimeout(() => {
+          window.location.href = `dashboard.html?username=${username}`;
+        }, 1000);
+      } else {
+        showToast(data.error || "Login failed", 'error');
+      }
+    }
+
+    async function handleSignup() {
+      const username = document.getElementById('signupUsername').value;
+      const password = document.getElementById('signupPassword').value;
+      const re_password = document.getElementById('signupRePassword').value;
+      const token = document.getElementById('signupToken').value;
+
+      const res = await fetch('/api/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password, re_password, token })
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        showToast(data.message, 'success');
+        setTimeout(() => {
+          window.location.href = `dashboard.html?username=${username}`;
+        }, 1000);
+      } else {
+        showToast(data.error || "Signup failed", 'error');
+      }
+    }
+  </script>
 </body>
 </html>
+

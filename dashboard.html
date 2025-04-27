@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Prayana | Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+    h1 {
+      color: #2c3e50;
+    }
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #27ae60;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .toast.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <h1 id="greeting">Welcome to Prayana!</h1>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    // Function to get URL query params
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    const username = getQueryParam('username');
+    const greeting = document.getElementById('greeting');
+    const toast = document.getElementById('toast');
+
+    if (username) {
+      greeting.textContent = `Welcome to Prayana, ${username}!`;
+
+      // Show toast
+      toast.textContent = `Logged in as ${username}`;
+      toast.classList.add("show");
+
+      // Hide after 3 seconds
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 3000);
+    } else {
+      greeting.textContent = "Welcome to Prayana!";
+    }
+  </script>
+</body>
+</html>
+
